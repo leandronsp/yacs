@@ -1,0 +1,13 @@
+version: '3.9'
+
+services:
+  dev:
+    image: ruby:2.7
+    container_name: yacs
+    working_dir: /yacs
+    volumes:
+      - ./:/yacs
+      - rubygems:/usr/local/bundle
+
+volumes:
+  rubygems:

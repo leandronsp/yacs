@@ -1,5 +1,5 @@
 console:
-	./make/console
+	docker-compose run dev bash
 
 utest:
-	./make/utest
+	docker-compose run dev ruby server_test.rb
