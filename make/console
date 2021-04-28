@@ -1,0 +1,10 @@
+#!/bin/bash
+
+docker run \
+  --rm \
+  -it \
+  -v $(pwd):/$(basename $(pwd)) \
+  -v rubygems:/usr/local/bundle \
+  -w /$(basename $(pwd)) \
+  ruby:2.7 \
+  bash
