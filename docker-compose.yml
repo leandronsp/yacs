@@ -8,6 +8,15 @@ services:
     volumes:
       - ./:/yacs
       - rubygems:/usr/local/bundle
+    ports:
+      - "4242:4242"
+    networks:
+      yacs:
+        aliases:
+          - yacs.dev
 
 volumes:
   rubygems:
+
+networks:
+  yacs:
