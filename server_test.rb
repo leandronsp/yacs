@@ -2,38 +2,19 @@ require 'socket'
 require 'test/unit'
 
 class ServerTest < Test::Unit::TestCase
-  def test_hey_42
-    server = TCPSocket.open('yacs.dev', 4242)
+  def test_client_42
+    server = TCPSocket.open('yacs.dev', 80)
 
-    request = 'HELLO from client=42'
+    request = "GET /customers/42 HTTP/1.1\r\n\r\n\r\n"
     server.puts(request)
 
-    response = server.gets
-    assert_equal "HEY, 42!\n", response
+    response = ''
 
-    server.close
-  end
+    while line = server.gets
+      response += line
+    end
 
-  def test_hey_312
-    server = TCPSocket.open('yacs.dev', 4242)
-
-    request = 'HELLO from client=312'
-    server.puts(request)
-
-    response = server.gets
-    assert_equal "HEY, 312!\n", response
-
-    server.close
-  end
-
-  def test_not_found
-    server = TCPSocket.open('yacs.dev', 4242)
-
-    request = 'UNKNOWN request'
-    server.puts(request)
-
-    response = server.gets
-    assert_equal "Not found\n", response
+    assert_equal "HTTP/1.1 200\r\n\r\nHey, 42!\n", response
 
     server.close
   end

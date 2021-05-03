@@ -9,7 +9,7 @@ services:
       - ./:/yacs
       - rubygems:/usr/local/bundle
     ports:
-      - "4242:4242"
+      - "80:80"
     networks:
       yacs:
         aliases:
