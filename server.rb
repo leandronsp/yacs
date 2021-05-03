@@ -2,11 +2,19 @@ require 'socket'
 
 socket = TCPServer.new(4242)
 
-client = socket.accept
-request = client.gets
+loop do
+  client = socket.accept
+  request = client.gets
 
-response = 'HEY, 42!'
-client.puts(response)
+  if result = request.match(/^HELLO from client=(.*?)$/)
+    client_id = result[1]
+    response = "HEY, #{client_id}!"
+    client.puts(response)
+  else
+    client.puts('Not found')
+  end
 
-client.close
+  client.close
+end
+
 socket.close
