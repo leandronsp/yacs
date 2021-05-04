@@ -10,7 +10,7 @@ loop do
   if verb == 'GET'
     if result = path.match(/^\/customers\/(.*?)$/)
       client_id = result[1]
-      response = "HTTP/1.1 200\r\n\r\nHey, #{client_id}!"
+      response = "HTTP/1.1 200\r\nContent-Type: text/html\r\n\r\n<h1>Hey, #{client_id}!</h1>"
       client.puts(response)
     end
   end
