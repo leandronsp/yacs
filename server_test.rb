@@ -5,7 +5,7 @@ class ServerTest < Test::Unit::TestCase
   def test_client_42
     server = TCPSocket.open('yacs.dev', 80)
 
-    request = "GET /customers/42 HTTP/1.1\r\nAccept: text/html\r\n\r\n"
+    request = "GET /users/42 HTTP/1.1\r\n\r\n"
     server.puts(request)
 
     response = ''
