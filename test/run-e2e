@@ -1,0 +1,13 @@
+#!/bin/bash
+
+mkdir -p ./tmp/pids
+rm ./tmp/pids/* 2> /dev/null
+ruby ./lib/server.rb &
+
+echo $! > ./tmp/pids/server.pid
+
+ruby ./test/server_test.rb
+
+serverpid=$(cat ./tmp/pids/server.pid)
+rm ./tmp/pids/*
+kill -9 $serverpid

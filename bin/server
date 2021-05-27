@@ -6,4 +6,4 @@ docker-compose run \
   --use-aliases \
   --rm \
   -d \
-  dev ruby server.rb
+  dev ruby ./lib/server.rb
