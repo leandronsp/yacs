@@ -1,0 +1,7 @@
+#!/bin/bash
+
+docker-compose run \
+  --name yacs-db \
+  --rm \
+  -d \
+  postgres

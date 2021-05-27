@@ -1,0 +1,3 @@
+#!/bin/bash
+
+docker-compose run dev ruby server_test.rb

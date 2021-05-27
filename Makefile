@@ -1,11 +1,22 @@
+args = $(filter-out $@, $(MAKECMDGOALS))
+
 console:
-	docker-compose run dev bash
+	./bin/console
 
 server:
-	docker-compose run \
-		--service-ports \
-		--use-aliases \
-		dev ruby server.rb
+	./bin/server
 
 utest:
-	docker-compose run dev ruby server_test.rb
+	./bin/test
+
+db:
+	./bin/db
+
+psql:
+	./bin/psql
+
+rmc:
+	./bin/rmc $(call args)
+
+%:
+	@:

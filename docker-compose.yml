@@ -3,7 +3,6 @@ version: '3.9'
 services:
   dev:
     image: ruby:2.7
-    container_name: yacs
     working_dir: /yacs
     volumes:
       - ./:/yacs
@@ -15,8 +14,22 @@ services:
         aliases:
           - yacs.dev
 
+  postgres:
+    image: postgres:12
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: yacsdev
+      POSTGRES_USER: yacsdev
+      POSTGRES_DB: yacs
+      PGDATA: /var/lib/postgresql/data/pgdata
+    volumes:
+      - pgdata:/var/lib/postgresql/data/pgdata
+    networks:
+      - yacs
+
 volumes:
   rubygems:
+  pgdata:
 
 networks:
   yacs:
