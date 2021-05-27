@@ -28,7 +28,7 @@ loop do
   first_line    = client.gets
   verb, path, _ = first_line.split
 
-  if verb == 'GET' && matched = path.match(/^\/customers\/(.*?)$/)
+  if verb == 'GET' && matched = path.match(/^\/users\/(.*?)$/)
     user_id  = matched[1]
     body     = template.gsub("{{user_id}}", user_id)
     response = "HTTP/1.1 200\r\nContent-Type: text/html\r\n\r\n#{body}"
