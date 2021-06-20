@@ -4,11 +4,43 @@ require 'pg'
 
 socket = TCPServer.new(80)
 
+def query(term)
+  """
+  SELECT
+    DISTINCT(geonames.geoname_id),
+    geonames.name,
+    geonames.feature_class,
+    geonames.feature_code,
+    geonames.country_code,
+    geonames.admin1_code,
+    geonames.admin2_code,
+    geonames.population,
+    geonames.timezone,
+    feature_codes.feature_class_description,
+    feature_codes.feature_code_description,
+    admin_codes.name AS admin_code_name,
+    countries_info.country
+  FROM
+    geonames
+  JOIN
+    feature_codes ON feature_codes.code = geonames.feature_class || '.' || geonames.feature_code
+  LEFT JOIN
+    admin_codes ON admin_codes.code = geonames.country_code || '.' || geonames.admin1_code
+  JOIN
+    countries_info ON countries_info.isocode = geonames.country_code
+  WHERE
+    to_tsvector('english', geonames.name || ' ' || geonames.alternate_names) @@ plainto_tsquery('english', '#{term}')
+  ORDER BY
+    geonames.population DESC
+  LIMIT 5
+  """
+end
+
 def search_results(term)
   conn = PG.connect(host: 'yacs-db', user: 'yacsdev',
                     password: 'yacsdev', dbname: 'yacs')
 
-  result = conn.exec("SELECT name,country_code,feature_class,feature_code FROM geonames WHERE to_tsvector('english', name || ' ' || alternate_names) @@ plainto_tsquery('#{term}') AND feature_class = 'P' ORDER BY population DESC limit 5")
+  result = conn.exec(query(term))
 
   result.entries.map do |entry|
     entry.each_with_object({}) do |(key, value), acc|
@@ -26,16 +58,15 @@ def search_results_view(term)
   results  = search_results(term)
 
   results.map do |result|
-    template
-      .gsub("{{name}}", result[:name])
-      .gsub("{{country_code}}", result[:country_code])
-      .gsub("{{feature_class}}", result[:feature_class])
-      .gsub("{{feature_code}}", result[:feature_code])
+    result.inject(template) do |acc, (key, value)|
+      acc = acc.gsub("{{#{key}}}", value || '')
+      acc
+    end
   end.join
 end
 
 loop do
-  client        = socket.accept
+  client     = socket.accept
   first_line = client.gets
 
   verb, path, _ = first_line.split(' ')

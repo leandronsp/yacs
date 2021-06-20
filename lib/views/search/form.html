@@ -1,10 +1,80 @@
-<form action="/search" method="POST">
-  <label for="term">Digite o nome da cidade</label>
-  <input type="text" id="term" name="term" onkeyup="doSearch(this, event)"\>
-</form>
+<style>
+  body {
+    font-family: Helvetica;
+    background-color: #f1f1f1;
+  }
 
-<div class="results">
+  div.container {
+    margin-left: 25%;
+    margin-right: 25%;
+    margin-top: 5%;
+    margin-bottom: 5%;
+  }
+
+  div.container h1 {
+    text-align: center;
+    margin: 15 0 0 0;
+    color: #333;
+  }
+
+  div.container p.headline {
+    text-align: center;
+    margin: 0 0 15 0;
+    color: #777;
+    font-size: 18px;
+    font-weight: 200;
+  }
+
+  div.container div.field {
+    padding: 10px 100px;
+  }
+
+  div.container div.results {
+    margin: 0 100;
+    border: 1px solid #c9c9c9;
+    border-radius: 4px;
+    background-color: #fff;
+    padding: 10px;
+    font-size: 18px;
+  }
+
+  div.container div.results:empty {
+    border: transparent;
+    background-color: transparent;
+  }
+
+  div.container div.field input {
+    width: 100%;
+    border: 1px solid #c9c9c9;
+    border-radius: 4px;
+    padding: 10px;
+    font-size: 22px;
+    text-align: center;
+    color: #333;
+  }
+
+  div.container div.field input:hover {
+    border: 1px solid #888;
+  }
+
+  div.container div.field input:focus {
+    outline: none;
+    border: 1px solid #333;
+  }
+</style>
+
+<div class="container">
+  <h1>Yacs</h1>
+  <p class="headline">Discover the world</p>
+
+  <form action="/search" method="POST">
+    <div class="field">
+      <input type="text" placeholder="Type any place in the world" name="term" onkeyup="doSearch(this, event)"\>
+    </div>
+    <div class="results"></div>
+  </form>
 </div>
+
 
  <script>
    var timeout = null;

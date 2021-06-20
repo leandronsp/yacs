@@ -1,3 +1,47 @@
-<p>
-  <span><b>{{name}}</b></span> - <small>{{country_code}} | {{feature_class}} | {{feature_code}}</small>
-</p>
+<style>
+  .card {
+    border: 1px solid: #e4e4e4;
+    padding: 10px;
+    background-color: #f9f9f9;
+    border-bottom: 1px solid #ddd;
+  }
+
+  .card:hover {
+    background-color: #e9e9e9;
+  }
+
+  .card h3 {
+    margin: 0;
+  }
+
+  .card div {
+    margin-top: 10px;
+    font-size: 12px;
+  }
+
+  .card div p {
+    margin: 2px 0;
+  }
+
+  .card div p.highlight {
+    margin-top: 10px;
+    font-weight: 100;
+  }
+
+  .card div p.highlight span {
+    display: block;
+  }
+</style>
+
+<div class="card">
+  <h3>{{name}}</h3>
+  <small>{{admin_code_name}} - {{country}}</small>
+
+  <div>
+    <p>{{feature_class_description}}({{feature_class}})</p>
+    <p>{{feature_code_description}}({{feature_code}})</p>
+    <p class="highlight">
+      <span>Population: {{population}} | Timezone: {{timezone}}</span>
+    </p>
+  </div>
+</div>
