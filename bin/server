@@ -5,5 +5,4 @@ docker-compose run \
   --service-ports \
   --use-aliases \
   --rm \
-  -d \
   dev ruby ./lib/server.rb

@@ -15,8 +15,5 @@ db:
 psql:
 	./bin/psql
 
-rmc:
-	./bin/rmc $(call args)
-
 %:
 	@:
