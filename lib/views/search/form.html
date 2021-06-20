@@ -1,6 +1,32 @@
 <form action="/search" method="POST">
-  <label for="term">Query</label>
-  <input type="text" id="term" name="term"\>
-
-  <input type="submit" value="Search"\>
+  <label for="term">Digite o nome da cidade</label>
+  <input type="text" id="term" name="term" onkeyup="doSearch(this, event)"\>
 </form>
+
+<div class="results">
+</div>
+
+ <script>
+   var timeout = null;
+
+   function doSearch(element, event) {
+     event.preventDefault();
+
+     let headers = {
+       'Content-Type': 'application/json'
+     };
+
+     let body = {};
+     body[element.name] = element.value;
+
+     var target = document.querySelector('.results');
+
+     clearTimeout(timeout);
+
+     timeout = setTimeout(() => {
+       fetch("search", { method: 'POST', headers: headers, body: JSON.stringify(body) })
+         .then(response => response.text())
+         .then(response => target.innerHTML = response)
+     }, 200);
+   }
+ </script>
