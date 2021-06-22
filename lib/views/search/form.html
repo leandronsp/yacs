@@ -69,7 +69,7 @@
 
   <form action="/search" method="POST">
     <div class="field">
-      <input type="text" placeholder="Type any place in the world" name="term" onkeyup="doSearch(this, event)"\>
+      <input type="text" placeholder="Type any place in the world" name="term" onkeyup="doSearch(this, event)" onkeydown="return event.key != 'Enter';"\>
     </div>
     <div class="results"></div>
   </form>

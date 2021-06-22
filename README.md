@@ -39,9 +39,13 @@ CREATE TABLE countries_info (isocode varchar(5), isocode3 varchar(5), iso_numeri
 continent varchar(10), tld varchar(10), currency_code varchar(20), currency_name varchar(50), phone varchar(20), postal_code_format varchar(200), postal_code_regex varchar(300), languages
 varchar(100), geoname_id integer, neighbours varchar(80), equivalent_fips_code varchar(50));
 
+CREATE EXTENSION pg_trgm;
+
 COPY geonames FROM '/allCountries.txt';
 COPY admin_codes FROM '/admin1CodesASCII.txt';
 COPY admin_codes FROM '/admin2Codes.txt';
 COPY feature_codes FROM '/featureCodes_en.txt';
 COPY countries_info FROM '/countryInfo.txt';
+
+CREATE INDEX geonames_search_idx ON geonames USING GIN (to_tsvector('simple', name || ' ' || alternate_names));
 ```

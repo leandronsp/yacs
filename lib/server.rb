@@ -19,7 +19,8 @@ def query(term)
     feature_codes.feature_class_description,
     feature_codes.feature_code_description,
     admin_codes.name AS admin_code_name,
-    countries_info.country
+    countries_info.country,
+    SIMILARITY(geonames.feature_code, 'PPLA') * SIMILARITY(geonames.feature_code, 'PPLC') * geonames.population AS rank_score
   FROM
     geonames
   JOIN
@@ -29,9 +30,9 @@ def query(term)
   JOIN
     countries_info ON countries_info.isocode = geonames.country_code
   WHERE
-    to_tsvector('english', geonames.name || ' ' || geonames.alternate_names) @@ plainto_tsquery('english', '#{term}')
+    to_tsvector('simple', geonames.name || ' ' || geonames.alternate_names) @@ plainto_tsquery('simple', '#{term}')
   ORDER BY
-    geonames.population DESC
+    rank_score DESC
   LIMIT 5
   """
 end
