@@ -20,7 +20,7 @@ def query(term)
     feature_codes.feature_code_description,
     admin_codes.name AS admin_code_name,
     countries_info.country,
-    SIMILARITY(geonames.feature_code, 'PPLA') * SIMILARITY(geonames.feature_code, 'PPLC') * geonames.population AS rank_score
+    SIMILARITY(geonames.feature_code, 'PPLA') * SIMILARITY(geonames.feature_code, 'PPLC') * log(COALESCE(NULLIF(geonames.population, 0), 1)) AS rank_score
   FROM
     geonames
   JOIN
