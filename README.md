@@ -2,8 +2,6 @@
 
 Yet another City search.
 
-A simple application for searching cities and related data from around the world, powered by [geonames.org](https://geonames.org/) and PostgreSQL full-text search capabilities.
-
 ```
 __   __ _    ____ ____  
 \ \ / // \  / ___/ ___| 
@@ -13,12 +11,21 @@ __   __ _    ____ ____
 
 ```
 
+A simple application for searching cities and related data from around the world, powered by [geonames.org](https://geonames.org/) and [PostgreSQL full-text search](https://www.postgresql.org/docs/current/textsearch.html) capabilities.
+
 - Fast and reliable city search functionality using PostgreSQL, across +12M cities from around the world
 - Easy to set up and run locally
 
+### Made with
+
+- ❤️
+- [PostgreSQL full-text search](https://www.postgresql.org/docs/current/textsearch.html)
+- A dead simple HTTP server written in Ruby, [leandronsp/adelnor](https://github.com/leandronsp/adelnor)
+- A very dead simple web framework written in Ruby, [leandronsp/chespirito](https://github.com/leandronsp/chespirito)
+
 ### Requirements
 
-Docker.
+Docker. You only need Docker. Seriously.
 
 ### Setup
 
