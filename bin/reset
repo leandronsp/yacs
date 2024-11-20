@@ -1,0 +1,15 @@
+#!/bin/bash
+
+SQL="
+DROP INDEX IF EXISTS geonames_search_idx; \
+DROP TABLE IF EXISTS geonames; \
+DROP TABLE IF EXISTS admin_codes; \
+DROP TABLE IF EXISTS feature_codes; \
+DROP TABLE IF EXISTS countries_info; \
+DROP TABLE IF EXISTS geonames; \
+DROP EXTENSION IF EXISTS pg_trgm
+"
+
+docker-compose exec db psql -U yacs yacs -c "$SQL"
+
+cat db/init.sql | docker-compose exec -T db psql -U yacs yacs

@@ -1,0 +1,24 @@
+#!/bin/bash
+
+DBUSER=yacs
+DBNAME=yacs
+
+echo "Starting COPY process for the geonames table..."
+docker-compose exec db psql -U $DBUSER $DBNAME -c "COPY geonames FROM '/db/allCountries.txt'"
+
+echo "Starting COPY process for the admin_codes table (admin1CodesASCII)..."
+docker-compose exec db psql -U $DBUSER $DBNAME -c "COPY admin_codes FROM '/db/admin1CodesASCII.txt'"
+
+echo "Starting COPY process for the admin_codes table (admin2Codes)..."
+docker-compose exec db psql -U $DBUSER $DBNAME -c "COPY admin_codes FROM '/db/admin2Codes.txt'"
+
+echo "Starting COPY process for the feature_codes table..."
+docker-compose exec db psql -U $DBUSER $DBNAME -c "COPY feature_codes FROM '/db/featureCodes_en.txt'"
+
+echo "Starting COPY process for the countries_info table..."
+docker-compose exec db psql -U $DBUSER $DBNAME -c "COPY countries_info FROM '/db/countryInfo.txt'"
+
+echo "Creating geonames_search_idx index on the geonames table..."
+docker-compose exec db psql -U $DBUSER $DBNAME -c "CREATE INDEX geonames_search_idx ON geonames USING GIN (to_tsvector('simple', name || ' ' || alternate_names))"
+
+echo "Process completed successfully!"

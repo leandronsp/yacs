@@ -1,8 +1,0 @@
-#!/bin/bash
-
-docker-compose run \
-  --name yacs-server \
-  --service-ports \
-  --use-aliases \
-  --rm \
-  dev ruby ./lib/server.rb

@@ -1,13 +1,25 @@
 GEM
   remote: https://rubygems.org/
   specs:
-    pg (1.2.3)
+    adelnor (0.0.7)
+      rack
+    chespirito (0.0.6)
+      adelnor
+      rack
+    pg (1.5.9)
+    rack (3.1.8)
+    rackup (2.2.1)
+      rack (>= 3)
 
 PLATFORMS
   ruby
+  x86_64-linux
 
 DEPENDENCIES
+  adelnor (~> 0.0.7)
+  chespirito (~> 0.0.5)
   pg
+  rackup
 
 BUNDLED WITH
-   2.1.4
+   2.5.22

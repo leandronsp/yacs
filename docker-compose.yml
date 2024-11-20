@@ -1,35 +1,35 @@
-version: '3.9'
-
 services:
-  dev:
-    image: ruby:2.7
-    working_dir: /yacs
+  app:
+    image: ruby
+    working_dir: /app
     volumes:
-      - ./:/yacs
+      - .:/app
       - rubygems:/usr/local/bundle
     ports:
-      - "80:80"
-    networks:
-      yacs:
-        aliases:
-          - yacs.dev
+      - "4000:4000"
+    command: rackup
+    depends_on:
+      db:
+        condition: service_healthy
 
-  postgres:
-    image: postgres:12
+  db:
+    build:
+      context: .
+      dockerfile: db.Dockerfile
     restart: always
     environment:
-      POSTGRES_PASSWORD: yacsdev
-      POSTGRES_USER: yacsdev
+      POSTGRES_PASSWORD: yacs
+      POSTGRES_USER: yacs
       POSTGRES_DB: yacs
-      PGDATA: /var/lib/postgresql/data/pgdata
     volumes:
-      - pgdata:/var/lib/postgresql/data/pgdata
-    networks:
-      - yacs
+      - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: pg_isready -U yacs -d yacs
+      interval: 10s
+      retries: 5
+      timeout: 10s
 
 volumes:
   rubygems:
   pgdata:
-
-networks:
-  yacs:
