@@ -25,5 +25,4 @@
                 --rm \
                 --name nginx \
                 --network host \
-                -v ./yacs.conf:/etc/nginx/sites-available/yacs \
                 nginx-yacs
