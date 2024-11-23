@@ -1,0 +1,5 @@
+development:
+  host: db
+  user: yacs
+  password: yacs
+  dbname: yacs

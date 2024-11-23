@@ -1,5 +1,5 @@
 require 'json'
-require 'pg'
+require_relative './database'
 
 class Search
   def self.call(term) 
@@ -8,7 +8,7 @@ class Search
 
   def initialize(term)
     @term = term
-    @conn = PG.connect(host: 'db', user: 'yacs', password: 'yacs', dbname: 'yacs')
+    @conn = Database.connection
   end
 
   def call

@@ -2,6 +2,8 @@ services:
   app:
     image: ruby
     working_dir: /app
+    environment:
+      APP_ENV: development
     volumes:
       - .:/app
       - rubygems:/usr/local/bundle
