@@ -1,0 +1,29 @@
+- name: Configure NGINX
+  hosts: yacs
+  tasks:
+    - name: Copy NGINX Dockerfile
+      ansible.builtin.copy:
+        src: nginx.Dockerfile
+        dest: ~/
+        owner: ubuntu
+        group: ubuntu
+        mode: u=rw,g=rw,o=r
+
+    - name: Copy NGINX Yacs site
+      ansible.builtin.copy:
+        src: yacs.conf
+        dest: ~/
+        owner: ubuntu
+        group: ubuntu
+        mode: u=rw,g=rw,o=r
+
+    - name: Run NGINX as a Docker container
+      shell: |
+        docker rm -f nginx
+        docker run \
+                -d \
+                --rm \
+                --name nginx \
+                --network host \
+                -v ./yacs.conf:/etc/nginx/sites-available/yacs \
+                nginx-yacs

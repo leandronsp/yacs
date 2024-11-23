@@ -1,0 +1,15 @@
+- name: Configure Yacs app
+  hosts: yacs
+  tasks:
+    - name: Create Yacs database
+      shell: |
+        docker run \
+                -d \
+                --rm \
+                --network yacs-production \
+                --name yacs-production-db \
+                -e POSTGRES_USER={{db_user}} \
+                -e POSTGRES_PASSWORD={{db_password}} \
+                -e POSTGRES_DB={{db_name}} \
+                -v yacs_production_data:/var/lib/postgresql/data \
+                leandronsp/yacs-db:{{version}}

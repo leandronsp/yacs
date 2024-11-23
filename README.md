@@ -67,6 +67,10 @@ Usage: make <target>
   db.reset                   Reset database
 ```
 
+* Docker
+* Addgroup Docker
+* Make
+
 ----
 
 [ASCII art generator](http://www.network-science.de/ascii/)
