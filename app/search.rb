@@ -12,13 +12,19 @@ class Search
   end
 
   def call
-    result = @conn.exec(query)
+    result = @conn.exec_params(query, [sanitized_term])
 
     result.entries.map do |entry|
       entry.each_with_object({}) do |(key, value), acc|
         acc[key.to_sym] = value
       end
     end
+  end
+
+  private
+
+  def sanitized_term
+    @conn.escape_string(@term)
   end
 
   def query
@@ -40,7 +46,7 @@ class Search
       countries_info.country,
       ts_rank(
         to_tsvector('simple', geonames.name || ' ' || geonames.alternate_names),
-        plainto_tsquery('simple', '#{@term}')
+        plainto_tsquery('simple', $1)
       ) * LOG(COALESCE(NULLIF(geonames.population, 0), 1)) AS rank_score
     FROM
       geonames
@@ -51,7 +57,7 @@ class Search
     JOIN
       countries_info ON countries_info.isocode = geonames.country_code
     WHERE
-      to_tsvector('simple', geonames.name || ' ' || geonames.alternate_names) @@ plainto_tsquery('simple', '#{@term}')
+      to_tsvector('simple', geonames.name || ' ' || geonames.alternate_names) @@ plainto_tsquery('simple', $1)
     ORDER BY 
       rank_score DESC
     LIMIT 5
