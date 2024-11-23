@@ -1,0 +1,26 @@
+- name: Deploy Yacs app
+  hosts: yacs
+  tasks:
+    - name: Build & Push the Docker image
+      args:
+        chdir: ../
+      shell: |
+        docker build --push -t leandronsp/yacs:{{ version }} --target production .
+      delegate_to: localhost
+
+    - name: Restart the Docker container
+      shell: |
+        docker stop yacs-production-app
+        docker run \
+                -d \
+                -it \
+                --rm \
+                --network yacs-production \
+                --name yacs-production-app \
+                -p 4000:4000 \
+                -e APP_ENV=production \
+                -e DB_HOST={{ db_host }} \
+                -e DB_USER={{ db_user }} \
+                -e DB_PASSWORD={{ db_password }} \
+                -e DB_NAME={{ db_name }} \
+                leandronsp/yacs:{{ version }}

@@ -1,0 +1,34 @@
+- name: Configure Yacs Database
+  hosts: yacs
+  tasks:
+    - name: Create the Docker network 
+      shell: |
+        docker network create yacs-production || true
+
+    - name: Run the Docker container
+      shell: |
+        docker stop {{ db_host }}
+        docker run \
+                -d \
+                --rm \
+                --network yacs-production \
+                --name {{ db_host }} \
+                -e POSTGRES_USER={{ db_user }} \
+                -e POSTGRES_PASSWORD={{ db_password }} \
+                -e POSTGRES_DB={{ db_name }} \
+                -v yacs_production_data:/var/lib/postgresql/data \
+                leandronsp/yacs-db:{{ version }}
+
+    - name: Initialize the database
+      shell: |
+        docker exec \
+                -it \
+                {{ db_host }} \
+                bash -c "cat /db/init.sql | psql -U {{ db_user }} {{ db_name }}"
+
+    - name: Populate the database
+      shell: |
+        docker exec \
+                -it \
+                {{ db_host }} \
+                bash -c "cat /db/populate.sql | psql -U {{ db_user }} {{ db_name }}"

@@ -24,19 +24,19 @@ db.populate: ## Populate data from geonames.org
 db.reset: ## Reset database
 	@bin/reset
 
-build.production.app:
+build.production.app: ## Build the app image for production
 	@docker build -t leandronsp/yacs --target production .
 
-build.production.db:
+build.production.db: ## Build the database image for production
 	@docker build -f db.Dockerfile -t leandronsp/yacs-db .
 
-push.production.app:
+push.production.app: ## Push the app production image
 	@docker push leandronsp/yacs:${version}
 
-push.production.db:
+push.production.db: ## Push the database production image
 	@docker push leandronsp/yacs-db:${version}
 
-run.production.db:
+run.production.db: ## Run the database in production mode
 	@docker run \
 		--rm \
 		--network yacs-production \
@@ -47,7 +47,7 @@ run.production.db:
 		-v yacs_production_data:/var/lib/postgresql/data \
 		leandronsp/yacs-db:${version}
 
-populate.production.db:
+populate.production.db: ## Populate the production database
 	@docker exec \
 		-it \
 		yacs-production-db \
@@ -57,7 +57,7 @@ populate.production.db:
 		yacs-production-db \
 		bash -c "cat /db/populate.sql | psql -U ${db_user} ${db_name}"
 
-run.production.app:
+run.production.app: ## Run the app in production mode
 	@docker run \
 		-it \
 		--rm \
@@ -71,3 +71,18 @@ run.production.app:
 		-e DB_NAME=${db_name} \
 		leandronsp/yacs:${version}
 
+export ANSIBLE_INVENTORY := ansible/inventory.ini
+
+define ansible_playbook
+    ansible-playbook --extra-vars "@ansible/vars.yml" $(1)
+endef
+
+ansible.setup: ## Setup Docker & NGINX in production
+	@$(call ansible_playbook, ansible/configure-docker.yml)
+	@$(call ansible_playbook, ansible/configure-nginx.yml)
+
+ansible.setup.db: ## Setup & Populate the database in production
+	@$(call ansible_playbook, ansible/configure-db.yml -e "version=latest")
+
+ansible.deploy: ## Deploy the application in production at a specific version (version=)
+	@$(call ansible_playbook, ansible/deploy-app.yml -e "version=${version}")

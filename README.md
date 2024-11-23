@@ -37,7 +37,7 @@ $ make db.populate     # Populate the database using data from geonames.org
 
 Server is running at http://localhost:4000
 
-### Production mode
+### Running in production mode (before deploy)
 
 ```bash
 $ docker network create yacs-production
@@ -48,6 +48,22 @@ $ make populate.production.db db_user=yacs db_name=yacs
 
 $ make build.production.app
 $ make run.production.app version=latest db_host=yacs-production-db db_user=yacs db_password=yacs db_name=yacs
+```
+
+### Provisioning & Deploy
+
+First things first, you need to copy the ansible vars example:
+
+```bash
+$ cp ansible/vars.yml.example ansible/vars.yml
+```
+
+Change the placeholder values, then:
+
+```bash
+$ make ansible.setup
+$ make ansible.setup.db
+$ make ansible.deploy version=latest
 ```
 
 Server in production mode is running at http://localhost:5000
@@ -65,11 +81,17 @@ Usage: make <target>
   psql                       Open psql
   db.populate                Populate data from geonames.org
   db.reset                   Reset database
+  build.production.app       Build the app image for production
+  build.production.db        Build the database image for production
+  push.production.app        Push the app production image
+  push.production.db         Push the database production image
+  run.production.db          Run the database in production mode
+  populate.production.db     Populate the production database
+  run.production.app         Run the app in production mode
+  ansible.setup              Setup Docker & NGINX in production
+  ansible.setup.db           Setup & Populate the database in production
+  ansible.deploy             Deploy the application in production at a specific version (version=)
 ```
-
-* Docker
-* Addgroup Docker
-* Make
 
 ----
 
