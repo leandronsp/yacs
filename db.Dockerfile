@@ -1,4 +1,4 @@
-FROM postgres:14 AS build
+FROM postgres:14
 WORKDIR /db
 
 RUN apt update && apt install -y unzip wget
@@ -9,3 +9,6 @@ RUN wget https://download.geonames.org/export/dump/featureCodes_en.txt
 RUN wget https://download.geonames.org/export/dump/countryInfo.txt
 RUN sed -i '/^#/d' /db/countryInfo.txt
 RUN unzip /db/allCountries.zip
+
+COPY db/populate.sql /db
+COPY db/init.sql /db

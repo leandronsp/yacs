@@ -3,3 +3,9 @@ development:
   user: yacs
   password: yacs
   dbname: yacs
+
+production:
+  host: <%= ENV['DB_HOST'] %>
+  user: <%= ENV['DB_USER'] %>
+  password: <%= ENV['DB_PASSWORD'] %>
+  dbname: <%= ENV['DB_NAME'] %>

@@ -37,6 +37,21 @@ $ make db.populate     # Populate the database using data from geonames.org
 
 Server is running at http://localhost:4000
 
+### Production mode
+
+```bash
+$ docker network create yacs-production
+
+$ make build.production.db
+$ make run.production.db version=latest db_user=yacs db_password=yacs db_name=yacs
+$ make populate.production.db db_user=yacs db_name=yacs
+
+$ make build.production.app
+$ make run.production.app version=latest db_host=yacs-production-db db_user=yacs db_password=yacs db_name=yacs
+```
+
+Server in production mode is running at http://localhost:5000
+
 ### Help
 
 `make help`:

@@ -1,6 +1,8 @@
 services:
   app:
-    image: ruby
+    build: 
+      context: .
+      target: base
     working_dir: /app
     environment:
       APP_ENV: development
