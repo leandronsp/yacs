@@ -27,7 +27,7 @@ A simple application for searching cities and related data from around the world
 
 Docker. You only need Docker. Seriously.
 
-### Setup
+## Setup
 
 ```bash
 $ make bundle.install  # Install app dependencies
@@ -50,7 +50,9 @@ $ make build.production.app
 $ make run.production.app version=latest db_host=yacs-production-db db_user=yacs db_password=yacs db_name=yacs
 ```
 
-### Provisioning & Deploy
+Server in production mode is running at http://localhost:5000
+
+## Provisioning & Deploy
 
 First things first, you need to copy the ansible vars example:
 
@@ -66,9 +68,7 @@ $ make ansible.setup.db
 $ make ansible.deploy version=latest
 ```
 
-Server in production mode is running at http://localhost:5000
-
-### Help
+## Help
 
 `make help`:
 
